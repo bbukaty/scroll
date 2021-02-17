@@ -4,9 +4,110 @@
         <meta charset="utf-8">
         <title>scroll</title>
         <meta name="description" content="">
+        <style>
+            html, body {
+                padding: 0;
+                margin: 0;
+            }
+
+            p {
+                font-size: x-large;
+                margin: 0pt 0pt;
+            }
+
+            .researchers {
+                text-shadow: 3px 2px 3px rgba(0, 0, 0, 0.418);
+            }
+
+            .you {
+                padding: 600pt 0pt;
+                background-image: linear-gradient(white, rgba(128, 128, 128, 0.431), white);
+            }
+
+            #love {
+                padding: 800pt 0pt;
+                background-image: linear-gradient(white, rgba(253, 165, 0, 0.349), white);
+            }
+
+            #end {
+                padding: 0pt 0pt;
+                background-image: none;
+            }
+
+            #months {
+                padding: 1600pt 0pt;
+                background-image: linear-gradient(white, rgba(73, 73, 73, 0.774), white);
+            }
+
+            #years {
+                padding: 24000pt 0pt 0pt 0pt;
+                background-image: linear-gradient(
+                    white, black 80%
+                );
+                color: white;
+                font-size: 24pt;
+                text-shadow: 1px 1px 4px rgb(255, 255, 255);
+            }
+
+            #recall {
+                padding: 8000pt 0pt 0pt 0pt;
+                background-color: black;
+                background-image: none;
+                color: white;
+            }
+
+            #today {
+                padding-top: 5000pt;
+                background-color: black;
+                background-image: repeating-linear-gradient(black, rgba(128, 128, 128, 0.068) 6000pt, black 16000pt);
+            }
+
+            .forgotten {
+                background-image: none;
+                background-color: black;
+            }
+
+            #memory {
+                background-image: linear-gradient(black, rgba(253, 165, 0, 0.349), black);
+            } 
+        </style>
         <link rel="stylesheet" type="text/css" href="style.css">
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="script.js"></script>
+        <script type="text/javascript">
+            window.onbeforeunload = function () {
+                window.scrollTo(0, 0);
+            };
+
+            $.fn.isInViewport = function() {
+                var elementTop = $(this).offset().top;
+                var elementBottom = elementTop + $(this).outerHeight();
+                var viewportTop = $(window).scrollTop();
+                var viewportBottom = viewportTop + $(window).height();
+                return elementBottom > viewportTop && elementTop < viewportBottom;
+            };
+
+
+            function reachPresent() {
+                document.body.style.backgroundColor = "black";
+                $(".you:not(#love,#today)").removeAttr("id").addClass("forgotten");
+                $("#love").prop("id","memory");
+                $("p").text("");
+            }
+
+            var today = false;    
+            $(window).scroll(function(){
+                while ($(window).scrollTop() >= $(document).height()-2*$(window).height()){
+                    if (!today) {
+                        today = true;
+                        reachPresent();
+                    }
+                    $("#today").css({"padding-bottom":"+=10"})
+                }
+                if (today && $("#memory").isInViewport()) {
+                    $("#memory").fadeOut(14000, "linear");
+                }
+            }); 
+        </script>
     </head>
     <body>
         <p class="researchers"                   style="margin-top: 100pt">
@@ -54,11 +155,6 @@
         
         <p id="today"></p>
         
-
-
-
-
-            
         
     </body>
 </html>
